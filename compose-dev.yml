@@ -1,0 +1,78 @@
+# version: "2.2"
+
+# services:
+
+#   # backend:
+#   #   build:
+#   #     context: ./backend
+#   #   ports:
+#   #     - 8000:8000
+#     # depends:
+#       # - database
+
+#   # frontend:
+#   #   build: 
+#   #     context: ./frontend
+#   #     dockerfile: dockerfile-dev
+#   #   volumes:
+#   #     - ./frontend/:/usr/src/app
+#   #   ports:
+#   #     - 4200:4200
+
+#   database:
+#     build:
+#       context: ./db
+#     ports:
+#       - '5432:5432'
+
+#   testing:
+#     image: postgres
+#     environment:
+#       POSTGRES_USER: test
+#       POSTGRES_PASSWORD: password
+
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  # auth:
+  #   build:
+  #     context: ./backends/auth
+  #     dockerfile: dockerfile
+  #   ports:
+  #     - 8000:8000
+  #   depends_on:
+  #     - db
+
+  greeting:
+    build:
+      context: ./backends/greeting
+    ports:
+      - 8002:8000
+
+  gateway:
+    build:
+      context: ./gateway
+    env_file:
+      - ./gateway/.env
+    ports:
+      - 8000:8000
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: dev_db
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
