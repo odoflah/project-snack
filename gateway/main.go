@@ -17,7 +17,7 @@ func getProxyUrl(proxyConditionRaw string) string {
 	condition_url := os.Getenv(proxyCondition)
 
 	if condition_url == "" {
-		return "http://gateway:8000/invalid"
+		return "invalid"
 	}
 
 	return condition_url
@@ -45,11 +45,6 @@ func serveReverseProxy(target string, res http.ResponseWriter, req *http.Request
 
 	// Note that ServeHttp is non blocking and uses a go routine under the hood
 	proxy.ServeHTTP(res, req)
-	// TODO: make an http request here to test if I can make a request
-	// _, err := http.Get("http://greeting:8002")
-	// if err != nil {
-	// log.Fatalln(err)
-	// }
 }
 
 func service(url string) string {
@@ -67,25 +62,19 @@ func handleRequestAndRedirect(res http.ResponseWriter, req *http.Request) {
 
 	url := getProxyUrl(service)
 
-	fmt.Println(url)
-
-	serveReverseProxy(url, res, req)
+	if url == "invalid" {
+		res.WriteHeader(http.StatusBadRequest)
+	} else {
+		serveReverseProxy(url, res, req)
+	}
 }
 
 /*
 	Entry
 */
 
-func invalid(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusBadRequest)
-}
-
 func main() {
-	// Log setup values
-	// logSetup()
-
 	// start server
-	http.HandleFunc("/invalid", invalid)
 	http.HandleFunc("/", handleRequestAndRedirect)
 	log.Fatal(http.ListenAndServe(":8000", nil))
 }
