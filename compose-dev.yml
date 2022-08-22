@@ -49,7 +49,9 @@ services:
     build:
       context: ./backends/greeting
     ports:
-      - 8002:8000
+      - 8002:8002
+    networks:
+      - app
 
   gateway:
     build:
@@ -58,6 +60,8 @@ services:
       - ./gateway/.env
     ports:
       - 8000:8000
+    networks:
+      - app
 
   db:
     image: postgres
@@ -76,3 +80,8 @@ services:
       - 8080:8080
     depends_on:
       - db
+
+
+networks:
+  app:
+    driver: bridge

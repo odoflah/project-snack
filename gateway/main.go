@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/http/httputil"
 	"net/url"
 	"os"
 	"strings"
@@ -33,7 +32,7 @@ func serveReverseProxy(target string, res http.ResponseWriter, req *http.Request
 	url, _ := url.Parse(target)
 
 	// create the reverse proxy
-	proxy := httputil.NewSingleHostReverseProxy(url)
+	// proxy := httputil.NewSingleHostReverseProxy(url)
 
 	// Update the headers to allow for SSL redirection
 	req.URL.Host = url.Host
@@ -41,8 +40,15 @@ func serveReverseProxy(target string, res http.ResponseWriter, req *http.Request
 	req.Header.Set("X-Forwarded-Host", req.Header.Get("Host"))
 	req.Host = url.Host
 
+	fmt.Println("I'm here")
+
 	// Note that ServeHttp is non blocking and uses a go routine under the hood
-	proxy.ServeHTTP(res, req)
+	// proxy.ServeHTTP(res, req)
+	// TODO: make an http request here to test if I can make a request
+	_, err := http.Get("http://greeting:8002")
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
 
 func service(url string) string {
