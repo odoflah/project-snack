@@ -11,3 +11,5 @@ This is a log of the design decions for the template repository in order to forc
 
 <!-- TODO: Enable protected routes with the reverse proxy and auth service -->
 <!-- TODO: Finish auth service -->
+
+https://kompose.io/architecture/
