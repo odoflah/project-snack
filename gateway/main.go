@@ -31,7 +31,6 @@ func getServiceHost(proxyConditionRaw string) (*url.URL, error) {
 }
 
 func handleRequestAndRedirect(w http.ResponseWriter, r *http.Request) {
-	// origin, _ := url.Parse("http://greeting:8002/")
 	// ALGORITHM
 	// - Get first elem in path -> determine the service
 	// - do origin, _ := url.Parse("http://greeting:8002/") and pass the origin to the reverse proxy

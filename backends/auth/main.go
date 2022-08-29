@@ -23,7 +23,7 @@ func main() {
 	defer db.Close()
 	fmt.Println("Database connected sucessfullly")
 	// start the server on port 8000
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	log.Fatal(http.ListenAndServe(":8001", nil))
 }
 
 func dbConnect() {

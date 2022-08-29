@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -18,12 +19,13 @@ type Credentials struct {
 
 // each session contains the username of the user and the time at which it expires
 type session struct {
-	session_token string
-	username      string
-	expiry        time.Time
+	token    string
+	username string
+	expiry   time.Time
 }
 
 func Signup(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("made a call to the signup route")
 	// Parse and decode the request body into a new `Credentials` instance
 	creds := &Credentials{}
 	err := json.NewDecoder(r.Body).Decode(creds)
@@ -97,9 +99,9 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 	if _, err = db.Query("insert into user_sessions values ($1, $2, $3)", sessionToken, creds.Username, expiresAt); err != nil {
 		// If there is any issue with inserting into the database, return a 500 error
 		w.WriteHeader(http.StatusInternalServerError)
-		// return
 	}
 
+	// TODO
 	// Finally, we set the client cookie for "session_token" as the session token we just generated
 	// we also set an expiry time of 120 seconds
 	http.SetCookie(w, &http.Cookie{
@@ -112,15 +114,15 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 	// The default 200 status is sent
 }
 
-func isExpired(w http.ResponseWriter, r *http.Request) {
-	session := &session{}
-	err := json.NewDecoder(r.Body).Decode(session)
-	if err != nil {
-		// If there is something wrong with the request body, return a 400 status
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	result := db.QueryRow("select expiry from user_sessions where token=$1", session.session_token)
-	_ := result.Scan(session.expiry)
-	return result.Before(time.Now())
-}
+// func isExpired(w http.ResponseWriter, r *http.Request) {
+// 	session := &session{}
+// 	err := json.NewDecoder(r.Body).Decode(session)
+// 	if err != nil {
+// 		// If there is something wrong with the request body, return a 400 status
+// 		w.WriteHeader(http.StatusBadRequest)
+// 		return
+// 	}
+// 	result := db.QueryRow("select expiry from user_sessions where token=$1", session.session_token)
+// 	_ := result.Scan(session.expiry)
+// 	return result.Before(time.Now())
+// }

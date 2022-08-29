@@ -13,3 +13,6 @@ This is a log of the design decions for the template repository in order to forc
 <!-- TODO: Finish auth service -->
 
 https://kompose.io/architecture/
+
+
+Template project to setup GCP project microservice architectyres 
