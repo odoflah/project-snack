@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"errors"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -10,71 +9,56 @@ import (
 	"strings"
 )
 
-// Get the url for a given proxy condition
-func getProxyUrl(proxyConditionRaw string) string {
+func main() {
+	http.HandleFunc("/", handleRequestAndRedirect)
+
+	http.ListenAndServe(":8000", nil)
+}
+
+func getServiceHost(proxyConditionRaw string) (*url.URL, error) {
+	var url *url.URL
 	proxyCondition := strings.ToUpper(proxyConditionRaw)
 
 	condition_url := os.Getenv(proxyCondition)
 
 	if condition_url == "" {
-		return "invalid"
+		return url, errors.New("unknown service")
 	}
 
-	return condition_url
+	url, _ = url.Parse(condition_url)
+
+	return url, nil
 }
 
-/*
-	Reverse Proxy Logic
-*/
+func handleRequestAndRedirect(w http.ResponseWriter, r *http.Request) {
+	// origin, _ := url.Parse("http://greeting:8002/")
+	// ALGORITHM
+	// - Get first elem in path -> determine the service
+	// - do origin, _ := url.Parse("http://greeting:8002/") and pass the origin to the reverse proxy
+	// remove the initial uri from the path and append the url.Path to be what remains
 
-// Serve a reverse proxy for a given url
-func serveReverseProxy(target string, res http.ResponseWriter, req *http.Request) {
-	// parse the url
-	url, _ := url.Parse(target)
+	path := r.URL.Path
+	pathBreakdown := strings.Split(path, "/")
+	serviceHost, _ := getServiceHost((pathBreakdown[1])) // the first uri in the path indifies the service
 
-	// create the reverse proxy
-	proxy := httputil.NewSingleHostReverseProxy(url)
+	// Mifght need to add this so it knows what kind of request it's dealing with cause it doesn;t know from teh incoming url
+	// director := func(req *http.Request) {
+	// 	req.Header.Add("X-Forwarded-Host", req.Host)
+	// 	req.Header.Add("X-Origin-Host", origin.Host)
+	// 	req.URL.Scheme = "http"
+	// 	req.URL.Host = origin.Host
+	// }
 
-	// Update the headers to allow for SSL redirection
-	req.URL.Host = url.Host
-	req.URL.Scheme = url.Scheme
-	req.Header.Set("X-Forwarded-Host", req.Header.Get("Host"))
-	req.Host = url.Host
+	reverseProxy := httputil.NewSingleHostReverseProxy(serviceHost)
 
-	fmt.Println("I'm here")
-
-	// Note that ServeHttp is non blocking and uses a go routine under the hood
-	proxy.ServeHTTP(res, req)
-}
-
-func service(url string) string {
-	split := strings.Split(url, string(os.PathSeparator))
-	return split[1]
-}
-
-// Given a request send it to the appropriate url
-func handleRequestAndRedirect(res http.ResponseWriter, req *http.Request) {
-	// requestPayload := parseRequestBody(req)
-	path := req.URL.Path
-	// fmt.Println(path)
-	service := service(path)
-	// fmt.Println(service)
-
-	url := getProxyUrl(service)
-
-	if url == "invalid" {
-		res.WriteHeader(http.StatusBadRequest)
-	} else {
-		serveReverseProxy(url, res, req)
+	// reconstruct path
+	var restOfUrl string
+	for _, uri := range pathBreakdown[2:] {
+		restOfUrl += uri + "/"
 	}
-}
 
-/*
-	Entry
-*/
+	restOfUrlCorrected := strings.TrimSuffix(restOfUrl, "/")
+	r.URL.Path = restOfUrlCorrected
 
-func main() {
-	// start server
-	http.HandleFunc("/", handleRequestAndRedirect)
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	reverseProxy.ServeHTTP(w, r)
 }
