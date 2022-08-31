@@ -183,3 +183,99 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 	// // If the session is valid, return the welcome message to the user
 	w.Write([]byte(fmt.Sprintf("Welcome %s!", storedSession.username)))
 }
+
+func Refresh(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("I'm here")
+	// We can obtain the session token from the requests cookies, which come with every request
+	c, err := r.Cookie("session_token")
+	fmt.Println(c)
+	if err != nil {
+		if err == http.ErrNoCookie {
+			// If the cookie is not set, return an unauthorized status
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		// For any other type of error, return a bad request status
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	sessionToken := c.Value
+
+	// TODO: get session from db here
+	result := db.QueryRow("select username, token, expiry from user_sessions where token=$1", sessionToken) // need to explicitly state the order so that the correct values our matched with the struct
+
+	storedSession := &session{}
+	err = result.Scan(&storedSession.username, &storedSession.token, &storedSession.expiry) // TODO: Need to find a way to scan the whole row into the struct so I can use the different values
+	if err != nil {
+		// If an entry with the username does not exist, send an "Unauthorized"(401) status
+		if err == sql.ErrNoRows {
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		// If the error is of any other type, send a 500 status
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	// fmt.Println(storedSession.expiry)
+	// // We then get the session from our session map
+
+	// // If the session is present, but has expired, we can delete the session, and return
+	// // an unauthorized status
+	if storedSession.isExpired() {
+		_, err := db.Exec("DELETE FROM user_sessions WHERE token=$1", sessionToken)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	// If the previous session is valid, create a new session token for the current user
+	newSessionToken := uuid.NewString()
+	expiresAt := time.Now().Add(120 * time.Second)
+
+	// Set the token in the session map, along with the user whom it represents
+	if _, err = db.Query("UPDATE user_sessions SET token=$1, expiry=$2 WHERE username=$3", newSessionToken, expiresAt, storedSession.username); err != nil {
+		// If there is any issue with inserting into the database, return a 500 error
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+
+	// Set the new token as the users `session_token` cookie
+	http.SetCookie(w, &http.Cookie{
+		Name:    "session_token",
+		Value:   newSessionToken,
+		Expires: time.Now().Add(120 * time.Second),
+	})
+}
+
+func Signout(w http.ResponseWriter, r *http.Request) {
+	c, err := r.Cookie("session_token")
+	if err != nil {
+		if err == http.ErrNoCookie {
+			// If the cookie is not set, return an unauthorized status
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		// For any other type of error, return a bad request status
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	sessionToken := c.Value
+
+	// remove the users session from the session map
+	_, err1 := db.Exec("DELETE FROM user_sessions WHERE token=$1", sessionToken)
+	if err1 != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	// We need to let the client know that the cookie is expired
+	// In the response, we set the session token to an empty
+	// value and set its expiry as the current time - this can be used in the UI to determine whethere or not to login (althout this is probably bad practice - a better way would be to have an isAuthenticated route that checks upon loading the website)
+	http.SetCookie(w, &http.Cookie{
+		Name:    "session_token",
+		Value:   "",
+		Expires: time.Now(),
+	})
+}
