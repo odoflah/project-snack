@@ -16,3 +16,19 @@ https://kompose.io/architecture/
 
 
 Template project to setup GCP project microservice architectyres 
+
+In the isAuthenticated function use token as signature i.e. is the token present and is the token matching to the user trying to access his individual user information - get the user not by getting the user value from the frontend but by getting the user value associated with the token - this means it has to be a token for the user
+https://cdn.shopify.com/shopifycloud/shopify_dev/assets/partners/jwt-request-flow-8377bd9698797d2d23713676585a01f9da42c80596ebdc673b971a1e577c65d4.png
+
+
+test curl commands for the api
+
+curl -X POST -v -H "Content-Type: application/json" -d '{"username": "[USERNAME]", "password": "[PASSWORD]"}' http://localhost:8000/auth/signup
+
+
+curl -X POST -v -H "Content-Type: application/json" -d '{"username": "[USERNAME]", "password": "[PASSWORD]"}' http://localhost:8000/auth/signin
+
+```bash
+curl -v --cookie "session_token=[TOKEN]" http://localhost:8000/auth/test
+```
+

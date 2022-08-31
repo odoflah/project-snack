@@ -17,6 +17,7 @@ func main() {
 	// "Signin" and "Signup" are handler that we will implement
 	http.HandleFunc("/signin", Signin)
 	http.HandleFunc("/signup", Signup)
+	http.HandleFunc("/test", Welcome)
 	// initialize our database connection
 	fmt.Println("Initialising connection to database")
 	dbConnect()
