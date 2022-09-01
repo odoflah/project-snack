@@ -10,6 +10,7 @@ This is a log of the design decions for the template repository in order to forc
 - all in one repository (monorep microservice application) so that engineers can see the whole codebase and make more informed design decisions
 - custom reverse-proxy/api gateway to not be tied to a cloud provider
 - Infra as code so as to version control infrastrucrure and create more robust understandable systems
+- route protection by default - all services are protected other than the aut service which by definition cxan't be protected
 
 
 <!-- TODO: Enable protected routes with the reverse proxy and auth service -->
@@ -34,3 +35,11 @@ curl -X POST -v -H "Content-Type: application/json" -d '{"username": "[USERNAME]
 ```bash
 curl -v --cookie "session_token=[TOKEN]" http://localhost:8000/auth/test
 ```
+
+	// Mifght need to add this so it knows what kind of request it's dealing with cause it doesn;t know from teh incoming url
+	// director := func(req *http.Request) {
+	// 	req.Header.Add("X-Forwarded-Host", req.Host)
+	// 	req.Header.Add("X-Origin-Host", origin.Host)
+	// 	req.URL.Scheme = "http"
+	// 	req.URL.Host = origin.Host
+	// }
