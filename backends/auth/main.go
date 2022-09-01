@@ -19,7 +19,7 @@ func main() {
 	http.HandleFunc("/signup", Signup)
 	http.HandleFunc("/refresh", Refresh)
 	http.HandleFunc("/signout", Signout)
-	http.HandleFunc("/isauth", Welcome)
+	http.HandleFunc("/isauth", IsAuth)
 	// initialize our database connection
 	fmt.Println("Initialising connection to database")
 	dbConnect()

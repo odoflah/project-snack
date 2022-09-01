@@ -1,3 +1,5 @@
+// Implementation largely inspired by https://www.sohamkamani.com/golang/session-cookie-authentication/
+
 package main
 
 import (
@@ -132,7 +134,7 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 // 	return result.Before(time.Now())
 // }
 
-func Welcome(w http.ResponseWriter, r *http.Request) {
+func IsAuth(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("I'm here")
 	// We can obtain the session token from the requests cookies, which come with every request
 	c, err := r.Cookie("session_token")

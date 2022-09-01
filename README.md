@@ -4,9 +4,12 @@ Integrates with CI/CD practices
 
 TODO: Add a reference architecture diagram
 
-Design motivations
+Design decisions
 This is a log of the design decions for the template repository in order to force me to justify why a decision was made
 - For develeopment fully orchestrated with docker compose to make life easier for devs
+- all in one repository (monorep microservice application) so that engineers can see the whole codebase and make more informed design decisions
+- custom reverse-proxy/api gateway to not be tied to a cloud provider
+- Infra as code so as to version control infrastrucrure and create more robust understandable systems
 
 
 <!-- TODO: Enable protected routes with the reverse proxy and auth service -->
@@ -31,4 +34,3 @@ curl -X POST -v -H "Content-Type: application/json" -d '{"username": "[USERNAME]
 ```bash
 curl -v --cookie "session_token=[TOKEN]" http://localhost:8000/auth/test
 ```
-
