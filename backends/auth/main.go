@@ -3,8 +3,8 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"net/http"
+	"os"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -13,35 +13,42 @@ import (
 // The "db" package level variable will hold the reference to our database instance
 var db *sql.DB
 
+// Connect to database being used for authentication information
+func dbConnect() {
+	// Sleep to allow database process to start up...
+	time.Sleep(5 * time.Second)
+
+	// Create connection string based on environment (the production environment overwrites the development environment)
+	connectionString := fmt.Sprintf("user=%s dbname=%s password=%s host=%s sslmode=disable", os.Getenv("DB_USER"),
+		os.Getenv("DB_NAME"), os.Getenv("DB_PASS"), os.Getenv("DB_HOST"))
+
+	// Open a connection to the database
+	db, err := sql.Open("postgres", connectionString)
+	if err != nil {
+		panic(err)
+	}
+
+	// Verify connection to database
+	err = db.Ping()
+	if err != nil {
+		panic(err)
+	}
+}
+
 func main() {
-	// "Signin" and "Signup" are handler that we will implement
+	// Authentication service routes
 	http.HandleFunc("/signin", Signin)
 	http.HandleFunc("/signup", Signup)
 	http.HandleFunc("/refresh", Refresh)
 	http.HandleFunc("/signout", Signout)
 	http.HandleFunc("/isauth", IsAuth)
-	// initialize our database connection
+
+	// Initialise database connection
 	fmt.Println("Initialising connection to database")
 	dbConnect()
 	defer db.Close()
-	fmt.Println("Database connected sucessfullly")
-	// start the server on port 8000
-	log.Fatal(http.ListenAndServe(":8001", nil))
-}
+	fmt.Println("Database connected successfully")
 
-func dbConnect() {
-	var err error
-	time.Sleep(5 * time.Second)
-	connStr := "user=dev dbname=dev_db password=password host=db sslmode=disable"
-	db, err = sql.Open("postgres", connStr)
-	if err != nil {
-		panic(err)
-	}
-	// defer db.Close()
-
-	err = db.Ping()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("\nSuccessfully connected to database!\n")
+	// Start listing...
+	http.ListenAndServe(":8001", nil)
 }
