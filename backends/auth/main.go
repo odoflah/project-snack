@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -23,7 +24,8 @@ func dbConnect() {
 		os.Getenv("DB_NAME"), os.Getenv("DB_PASS"), os.Getenv("DB_HOST"))
 
 	// Open a connection to the database
-	db, err := sql.Open("postgres", connectionString)
+	var err error
+	db, err = sql.Open("postgres", connectionString)
 	if err != nil {
 		panic(err)
 	}
@@ -47,8 +49,9 @@ func main() {
 	fmt.Println("Initialising connection to database")
 	dbConnect()
 	defer db.Close()
+
 	fmt.Println("Database connected successfully")
 
 	// Start listing...
-	http.ListenAndServe(":8001", nil)
+	log.Fatalln(http.ListenAndServe(":8001", nil))
 }
