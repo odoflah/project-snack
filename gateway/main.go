@@ -65,7 +65,7 @@ func isAuthRequest(cookieFromRequest *http.Cookie) (bool, error) {
 	client := &http.Client{}
 
 	// Construct request to authentication service
-	req, err := http.NewRequest("GET", "http://"+os.Getenv("AUTH")+"/isauth", nil)
+	req, err := http.NewRequest("GET", os.Getenv("AUTH")+"/isauth", nil)
 	if err != nil {
 		return false, errors.New("unable to construct request to authentication service")
 	}
