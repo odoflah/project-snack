@@ -17,8 +17,8 @@ services:
       context: ./backends/greeting
     ports:
       - 8002:8002
-    # depends_on:
-    #   - auth
+    depends_on:
+      - auth
 
   gateway:
     build:
@@ -46,11 +46,11 @@ services:
     depends_on:
       - db
 
-  # frontend:
-  #   build: 
-  #     context: ./frontend
-  #     dockerfile: dockerfile-dev
-  #   volumes:
-  #     - ./frontend/:/usr/src/app
-  #   ports:
-  #     - 4200:4200
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: dockerfile-dev
+    volumes:
+      - ./frontend/:/usr/src/app
+    ports:
+      - 4200:4200
