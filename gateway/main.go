@@ -12,6 +12,10 @@ import (
 // Create a reverse proxy connection to the backend service host, set the correct URL path for the specific service
 // request and serve the request
 func connectAndServe(serviceHost string, servicePath string, w http.ResponseWriter, r *http.Request) {
+	enableCors(w)
+	if r.Method == "OPTIONS" {
+		return
+	}
 	// Convert the host to a URL and create a reverse proxy connection
 	url, _ := url.Parse(serviceHost)
 	reverseProxy := httputil.NewSingleHostReverseProxy(url)
@@ -92,6 +96,10 @@ func isAuthRequest(cookieFromRequest *http.Cookie) (bool, error) {
 // cookie or an invalid session is provided, return an unauthorized response. Route protection is implemented at this
 // level.
 func handleRequest(w http.ResponseWriter, r *http.Request) {
+	enableCors(w)
+	if r.Method == "OPTIONS" {
+		return
+	}
 	requestPath := r.URL.Path
 	serviceHost, servicePath := constructServiceRequestURL(requestPath)
 
@@ -134,6 +142,13 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
+}
+
+func enableCors(w http.ResponseWriter) {
+	//Allow CORS here By * or specific origin
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+    w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 }
 
 // API Gateway (reverse-proxy) entrypoint
