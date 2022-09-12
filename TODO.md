@@ -1,4 +1,4 @@
-- Clean up auth service
-- Write tests for the gateway and authentication services
-- Put into production (figure out the best way of using GKE on GCP)
-- Finish writing initial version of documentation
+- [ ] Clean up auth service
+- [ ] Write tests for the gateway and authentication services
+- [ ] Put into production (figure out the best way of using GKE on GCP)
+- [ ] Finish writing initial version of documentation

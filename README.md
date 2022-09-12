@@ -1,11 +1,22 @@
-# Microservice architecture app reference template
+# Reference template for microservice architecture apps
 
 ## Abstract and architecture
 
-This is a reference repository for a typical modern cloud application. The project contains services layer (incl. authentication service) with an API gateway (reverse-proxy server) to interface with all the services through one url and implement route protection. And a display layer which is in this case an Angular frontend.
+This is a reference repository for a typical modern cloud application. The project is broken down into several backend services and the frontend service. The backend services are services that provide application logic and frontend is a siplay service that allows users to interface with all the various backend services throiugh one coherent GUI. Backends referes to all backend services (including authentication). Each of the backend services can be interfaced with via a single URL which is achieved by an API gateway (a reverse-proxy server) which sits in front of all the backends and handles routing to the correct service and implements route protection. The frontend is a display layer which provides a single interface with which users may interact with the application through a GUI.
 
-The architecture is depicted bellow:
+The application architecture is depicted bellow:
 <!-- TODO: Add a reference architecture diagram -->
+```mermaid
+flowchart LR
+    A(Frontend) -->|public| B(API gateway)
+    B <--> C(Authentication)
+    B --> D(Backend service)
+    B --> E(Backend service)
+```
+
+Application architecture within the context of Kubernetes
+
+Application architecture within the context of GCP
 
 ## Why a microservice architecture
 - allows for non-uniform scalling

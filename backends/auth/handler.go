@@ -52,7 +52,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 
 	// Salt and hash the password using the bcrypt algorithm. The second argument is the cost of hashing, which we
 	// arbitrarily set as 8 (this value can be more or less, depending on the computing power you wish to utilize)
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(requestCredentials.Password), 8)
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(requestCredentials.Password), bcrypt.DefaultCost)
 
 	// Insert the username, along with the hashed password into the database
 	_, err = db.Query("insert into users values ($1, $2)", requestCredentials.Username, string(hashedPassword))
