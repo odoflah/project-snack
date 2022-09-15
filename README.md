@@ -153,3 +153,5 @@ Using skaffold is pretty cool and can be an alternative to using compose locally
 Do not used the default VPC for a production system - make a new one and create regional subnetworks as desired and firewall rules to only allow ingress on specified ports
 
 Obviously don't store secrete objects in your dev repository - ./release-orch/_auth_db-secret.yaml should be placed in a secret repository and pulled into the production system
+
+dev cluster and prod cluster
