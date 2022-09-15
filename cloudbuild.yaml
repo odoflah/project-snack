@@ -1,9 +1,9 @@
 steps:
-- name: 'microservice-app-template-frontend'
+- name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/abiding-cedar-359014/microservice-app-template-frontend', './frontend/dockerfile-prod']
-- name: 'microservice-app-template-gateway'
+- name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/abiding-cedar-359014/microservice-app-template-gateway', './gateway/dockerfile']
-- name: 'microservice-app-template-auth'
+- name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/abiding-cedar-359014/microservice-app-template-auth', './backends/auth/dockerfile']
-- name: 'microservice-app-template-greeting'
+- name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/abiding-cedar-359014/microservice-app-template-greeting', './backends/greeting/dockerfile']
