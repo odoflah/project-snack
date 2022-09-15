@@ -22,12 +22,22 @@ spec:
         ports:
         - containerPort: 80
         env:
-        - name: SECRET_USERNAME
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: authdb-secret
+              key: dbhost
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: authdb-secret
+              key: dbname
+        - name: DB_USER
           valueFrom:
             secretKeyRef:
               name: authdb-secret
               key: username
-        - name: SECRET_PASSWORD
+        - name: DB_PASS
           valueFrom:
             secretKeyRef:
               name: authdb-secret
