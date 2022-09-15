@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  AUTH: http://auth:80
+  GREETING: http://greeting:80
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: gateway-confmap
+  name: gateway-confmap

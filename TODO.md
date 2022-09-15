@@ -1,4 +1,7 @@
-- [ ] Clean up auth service
-- [ ] Write tests for the gateway and authentication services
-- [ ] Put into production (figure out the best way of using GKE on GCP)
-- [ ] Finish writing initial version of documentation
+- Clean up auth service
+- Write tests for the gateway and authentication services
+- Put into production (figure out the best way of using GKE on GCP)
+- Finish writing initial version of documentation
+- Try and making a working kub cluster even just locally on machine with /release configuration
+- Could look at adding the Kub dashboard as a pod+service on the release, so we can monitor production systems using a standardised open tool
+- add userIDs + clean up schema

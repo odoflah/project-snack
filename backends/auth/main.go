@@ -14,6 +14,15 @@ import (
 // The "db" package level variable will hold the reference to our database instance
 var db *sql.DB
 
+func configureDatabase() {
+	// if db exists and schema matches current schema -> connect to db (need to connect to the bs server, not the individual database)
+		// Create db
+		// Create user
+		// Upload schema
+	// if db does not exist -> create database
+	// if db exists but schema does not match updated schema -> update schema
+}
+
 // Connect to database being used for authentication information
 func dbConnect() {
 	// Sleep to allow database process to start up...
@@ -44,6 +53,7 @@ func main() {
 	http.HandleFunc("/refresh", Refresh)
 	http.HandleFunc("/signout", Signout)
 	http.HandleFunc("/isauth", IsAuth)
+	// TODO: Add return auth user data e.g. returns names, userid...
 
 	// Initialise database connection
 	fmt.Println("Initialising connection to database")
@@ -53,5 +63,5 @@ func main() {
 	fmt.Println("Database connected successfully")
 
 	// Start listing...
-	log.Fatalln(http.ListenAndServe(":8001", nil))
+	log.Fatalln(http.ListenAndServe(":80", nil))
 }
