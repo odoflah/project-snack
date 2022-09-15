@@ -154,5 +154,5 @@ func enableCors(w http.ResponseWriter) {
 // API Gateway (reverse-proxy) entrypoint
 func main() {
 	http.HandleFunc("/", handleRequest)
-	http.ListenAndServe(":8000", nil)
+	http.ListenAndServe(":80", nil)
 }
