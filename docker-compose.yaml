@@ -20,6 +20,14 @@ services:
     depends_on:
       - auth
 
+  snacktrack:
+    build:
+      context: ./backends/snacktrack
+    ports:
+      - 8003:80
+    depends_on:
+      - auth
+
   gateway:
     build:
       context: ./gateway
