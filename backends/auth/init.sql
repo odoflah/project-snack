@@ -11,19 +11,20 @@ create table user_sessions (
 );
 
 create table snacks (
+  snackId serial,
   snackName text,
   snackDesc text,
   snackCat text,
   snackPic text,
   healthScore int,
-  PRIMARY KEY (snackName)
+  PRIMARY KEY (snackId)
 );
 
 create table snackSighting (
-  snackName text,
-  CONSTRAINT fk_snack_name FOREIGN KEY (snackName) REFERENCES snacks(snackName),
+  snackId int,
+  CONSTRAINT fk_snack_id FOREIGN KEY (snackId) REFERENCES snacks(snackId),
   sightTime timestamp,
   sightLocation text,
   sightEstDuration timestamp,
-  CONSTRAINT pk_sighting PRIMARY KEY (snackName, sightTime, sightLocation)
+  CONSTRAINT pk_sighting PRIMARY KEY (snackId, sightTime, sightLocation)
 );
