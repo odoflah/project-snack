@@ -174,3 +174,4 @@ gcloud container clusters get-credentials [CLUSTER_NAME] --zone=[CLUSTER_ZONE]
 Check the correct context with
 kubectl config current-context
 
+The auth service is configured to connect to the sql database via its local IP (as both the SQL instance and GKE cluster are on the same VPC) - we do not use the Cloud SQL Auth proxy sidecar method as it adds extra complexity and prevents the configuration from being portable to other cloud providers (https://cloud.google.com/sql/docs/postgres/connect-kubernetes-engine#proxy)

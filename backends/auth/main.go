@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -14,13 +15,23 @@ import (
 // The "db" package level variable will hold the reference to our database instance
 var db *sql.DB
 
-func configureDatabase() {
+func migrateDb() {
 	// if db exists and schema matches current schema -> connect to db (need to connect to the bs server, not the individual database)
-		// Create db
-		// Create user
-		// Upload schema
+	// Create db
+	// Create user
+	// Upload schema
 	// if db does not exist -> create database
 	// if db exists but schema does not match updated schema -> update schema
+	query, err := ioutil.ReadFile("./init.sql")
+	if err != nil {
+		panic(err)
+	}
+	sql := string(query)
+	fmt.Println("Printing sql")
+	fmt.Println(sql)
+	if _, err := db.Exec(sql); err != nil {
+		panic(err)
+	}
 }
 
 // Connect to database being used for authentication information
@@ -58,6 +69,7 @@ func main() {
 	// Initialise database connection
 	fmt.Println("Initialising connection to database")
 	dbConnect()
+	migrateDb()
 	defer db.Close()
 
 	fmt.Println("Database connected successfully")
