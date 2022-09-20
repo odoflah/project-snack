@@ -210,7 +210,7 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 
 	// If the previous session is valid, create a new session token for the current user
 	newSessionToken := uuid.NewString()
-	expiresAt := time.Now().Add(120 * time.Second)
+	expiresAt := time.Now().Add(24 * time.Hour)
 
 	// Set the token in the session map, along with the user whom it represents
 	if _, err = db.Query("UPDATE user_sessions SET token=$1, expiry=$2 WHERE username=$3", newSessionToken, expiresAt, storedSession.username); err != nil {
