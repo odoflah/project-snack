@@ -23,6 +23,8 @@ services:
   snacktrack:
     build:
       context: ./backends/snacktrack
+    env_file:
+      - ./backends/snacktrack/.env
     ports:
       - 8003:80
     depends_on:
