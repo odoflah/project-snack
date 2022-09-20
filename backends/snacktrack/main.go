@@ -34,6 +34,14 @@ func main() {
 	}
 
 	http.HandleFunc("/", hello)
+
+	http.HandleFunc("/addSnack", addSnack)
+	http.HandleFunc("/addSnack", readSnack)
+	http.HandleFunc("/addSnack", removeSnack)
+	http.HandleFunc("/addSnack", addSnackSighting)
+	http.HandleFunc("/addSnack", readSnackSighting)
+	http.HandleFunc("/addSnack", removeSnackSighting)
+
 	http.ListenAndServe(":80", nil)
 }
 
