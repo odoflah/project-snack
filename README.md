@@ -10,9 +10,13 @@ The application architecture is depicted bellow:
 flowchart LR
     A(Frontend) -->|public| B(API gateway)
     B <--> C(Authentication)
-    B --> D(Backend service)
-    B --> E(Backend service)
+    B --> D(Backend service 1)
+    B --> E(Backend service 2)
+    B --> F(Backend service n)
 ```
+
+In prose:
+A request is made from the frontend to the API gateway. If the request contains a valid session token it is then forwarded on to the desired microservice as determined by the first path value of the URL. Else the request is considered unauthenticated
 
 Application architecture within the context of Kubernetes
 
@@ -67,7 +71,7 @@ curl -X POST -v -H "Content-Type: application/json" -d '{"username": "[USERNAME]
 curl -X POST -v -H "Content-Type: application/json" -d '{"username": "[USERNAME]", "password": "[PASSWORD]"}' http://localhost:8000/auth/signin
 
 ```bash
-curl -v --cookie "session_token=[TOKEN]" http://localhost:8000/auth/test
+curl -v --cookie "session_token=[TOKEN]" http://localhost:8000/*
 ```
 
 
