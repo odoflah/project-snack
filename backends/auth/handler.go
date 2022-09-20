@@ -222,7 +222,7 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "session_token",
 		Value:   newSessionToken,
-		Expires: time.Now().Add(120 * time.Second),
+		Expires: time.Now().Add(24 * time.Hour),
 	})
 }
 
