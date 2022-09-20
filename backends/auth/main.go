@@ -27,8 +27,8 @@ func migrateDb() {
 		panic(err)
 	}
 	sql := string(query)
-	fmt.Println("Printing sql")
-	fmt.Println(sql)
+	// fmt.Println("Printing sql")
+	// fmt.Println(sql)
 	if _, err := db.Exec(sql); err != nil {
 		panic(err)
 	}
