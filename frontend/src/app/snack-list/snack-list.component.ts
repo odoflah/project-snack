@@ -10,7 +10,7 @@ import { Sighting } from '../_interfaces/sighting';
 // }
 
 const ELEMENT_DATA: Sighting[] = [
-  { snack: 'Kit Kat', location: "Docs MK8-3", picture: null, sighter: "Alex", timestamp: "2022-09-21 11:18:46.473756" },
+  { sname: 'Kit Kat', simage: "", sighttime: "2022-09-21 11:18:46.473756", sightlocation: "Velasco mk4-6" },
 ];
 
 
@@ -21,7 +21,7 @@ const ELEMENT_DATA: Sighting[] = [
 })
 export class SnackListComponent implements OnInit {
 
-  displayedColumns: string[] = ['snack', 'location', 'sighter', 'timestamp'];
+  displayedColumns: string[] = ['sname', 'sightlocation'];
   dataSource: Sighting[] = ELEMENT_DATA;
 
 
@@ -31,7 +31,7 @@ export class SnackListComponent implements OnInit {
   ngOnInit(): void {
     this.apiCallerService.getSightings().subscribe((data: Sighting[]) => {
       console.log(data)
-      // this.dataSource = data
+      this.dataSource = data
       console.log(this.dataSource)
     })
   }

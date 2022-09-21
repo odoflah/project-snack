@@ -1,7 +1,6 @@
 export interface Sighting {
-    snack: string
-    location: string
-    picture: null
-    sighter: string
-    timestamp: string
+    sname: string
+    simage: string
+    sighttime: string
+    sightlocation: string
 }

@@ -12,17 +12,17 @@ import (
 
 // SnackSighting struct models the structure of a SnackSighting entry, both in the request body, and in the database schema
 type SnackSighting struct {
-	SnackId          int    `json:"snackid" db:"snackid"`
-	SighTime         string `json:"sighttime" db:"sighttime"`
-	SightLocation    string `json:"sightlocation" db:"sightlocation"`
-	SightEstDuration string `json:"sightestduration" db:"sightestduration"`
+	SName         string `json:"sname" db:"sname"`
+	SighTime      string `json:"sighttime" db:"sighttime"`
+	SightLocation string `json:"sightlocation" db:"sightlocation"`
+	SImage        string `json:"simage" db:"simage"`
 }
 
 // SnackSighting struct models the structure of a SnackSighting key, both in the request body, and in the database schema
 type SnackSightingKey struct {
-	SnackId          int    `json:"snackid" db:"snackid"`
-	SighTime         string `json:"sighttime" db:"sighttime"`
-	SightLocation    string `json:"sightlocation" db:"sightlocation"`
+	SnackId       int    `json:"snackid" db:"snackid"`
+	SighTime      string `json:"sighttime" db:"sighttime"`
+	SightLocation string `json:"sightlocation" db:"sightlocation"`
 }
 
 func submitSighting(w http.ResponseWriter, r *http.Request) {
@@ -33,10 +33,9 @@ func submitSighting(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := db.Query(`INSERT INTO snacksighting (snackid, sighttime, sightlocation, sightestduration) 
-						VALUES ($1, $2, $3, $4)`, 
-						requestSnackSighting.SnackId, requestSnackSighting.SighTime, 
-						requestSnackSighting.SightLocation, requestSnackSighting.SightEstDuration)
+	_, err := db.Query(`INSERT INTO snacksightings (sname, simage, sighttime, sightlocation) 
+						VALUES ($1, $2, $3, $4)`,
+		requestSnackSighting.SName, requestSnackSighting.SImage, requestSnackSighting.SighTime, requestSnackSighting.SightLocation)
 	if err != nil {
 		// If there is any issue with inserting into the database, return a 500 error
 		w.WriteHeader(http.StatusInternalServerError)
@@ -44,8 +43,9 @@ func submitSighting(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func getSightings(w http.ResponseWriter, r *http.Request) {
-	result, err := db.Query("SELECT snackid, sighttime, sightlocation, sightestduration FROM snacksighting")
+	result, err := db.Query("SELECT sname, simage, sighttime, sightlocation FROM snacksightings")
 	if err != nil {
+		fmt.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	} else {
@@ -53,7 +53,8 @@ func getSightings(w http.ResponseWriter, r *http.Request) {
 		for result.Next() {
 			//Append all returned entries to list
 			sighting := &SnackSighting{}
-			if err := result.Scan(&sighting.SnackId, &sighting.SighTime, &sighting.SightLocation, &sighting.SightEstDuration); err != nil {
+			if err := result.Scan(&sighting.SName, &sighting.SImage, &sighting.SighTime, &sighting.SightLocation); err != nil {
+				fmt.Println(err)
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
@@ -73,7 +74,7 @@ func removeSighting(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err := db.Query(`DELETE FROM snacksighting WHERE snackid=$1 AND sighttime=$2 AND sightlocation=$3`,
-						requestSnackSightingKey.SnackId, requestSnackSightingKey.SighTime, requestSnackSightingKey.SightLocation)
+		requestSnackSightingKey.SnackId, requestSnackSightingKey.SighTime, requestSnackSightingKey.SightLocation)
 	if err != nil {
 		// If there is any issue with inserting into the database, return a 500 error
 		w.WriteHeader(http.StatusInternalServerError)

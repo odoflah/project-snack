@@ -1,30 +1,31 @@
-create table users (
-  username text primary key,
-  password text
-);
+-- create table snacks (
+--   id serial,
+--   sname text,
+--   sdesc text,
+--   category text,
+--   simage text,
+--   healthScore int,
+--   PRIMARY KEY (id)
+-- );
 
-create table user_sessions (
-  token text primary key,
-  username text,
-  expiry timestamp,
-  CONSTRAINT fk_session_user FOREIGN KEY (username) REFERENCES users(username)
-);
+-- create table snackSightings (
+--   snackid int,
+--   CONSTRAINT fk_snack_id FOREIGN KEY (snackId) REFERENCES snacks(id),
+--   sightTime timestamp,
+--   sightLocation text,
+--   CONSTRAINT pk_sighting PRIMARY KEY (snackId, sightTime, sightLocation)
+-- );
 
-create table snacks (
-  snackId serial,
-  snackName text,
-  snackDesc text,
-  snackCat text,
-  snackPic text,
-  healthScore int,
-  PRIMARY KEY (snackId)
-);
 
-create table snackSighting (
-  snackId int,
-  CONSTRAINT fk_snack_id FOREIGN KEY (snackId) REFERENCES snacks(snackId),
+-- INSERT INTO snacks (sname, sdesc, category, simage, healthScore) VALUES ('KitKat', 'Chocolate wafer', 'Chocolate bar', NULL, 0);
+-- INSERT INTO snacks (sname, sdesc, category, simage, healthScore) VALUES ('Smoked almond', 'Salted smoked almonds', 'Nuts', NULL, 0);
+-- INSERT INTO snacks (sname, sdesc, category, simage, healthScore) VALUES ('Apple', 'A round fruit', 'Fruit', NULL, 0);
+
+
+create table snackSightings (
+  sname text,
+  simage text NOT NULL DEFAULT '',
   sightTime timestamp,
   sightLocation text,
-  sightEstDuration timestamp,
-  CONSTRAINT pk_sighting PRIMARY KEY (snackId, sightTime, sightLocation)
+  CONSTRAINT pk_sighting PRIMARY KEY (sname, sightTime, sightLocation)
 );

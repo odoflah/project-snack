@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 
@@ -12,17 +11,17 @@ import (
 
 // Snack struct models the structure of a SnackSighting entry, both in the request body, and in the database schema
 type Snack struct {
-	SnackId int `json:"snackid" db:"snackid"`
-	SnackName string `json:"snackname" db:"snackname"`
-	SnackDesc string `json:"snackdesc" db:"snackdes"`
-	SnackCat string `json:"snackcat" db:"snackcat"`
-	SnackPic string `json:"snackpic" db:"snackpic"`
-	HealthScore int `json:"healthscore" db:"healthscore"`
+	SnackId     int    `json:"snackid" db:"snackid"`
+	SnackName   string `json:"snackname" db:"snackname"`
+	SnackDesc   string `json:"snackdesc" db:"snackdes"`
+	SnackCat    string `json:"snackcat" db:"snackcat"`
+	SnackPic    string `json:"snackpic" db:"snackpic"`
+	HealthScore int    `json:"healthscore" db:"healthscore"`
 }
 
 // SnackKey struct models the structure of a Snack key, both in the request body, and in the database schema
 type SnackKey struct {
-	SnackId          int    `json:"snackid" db:"snackid"`
+	SnackId int `json:"snackid" db:"snackid"`
 }
 
 func submitSnack(w http.ResponseWriter, r *http.Request) {
@@ -34,8 +33,8 @@ func submitSnack(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err := db.Query(`INSERT INTO snacks (snackname, snackdesc, snackcat, snackpic, healthscore) 
-						VALUES ($1, $2, $3, $4, $5)`, 
-						requestSnack.SnackName, requestSnack.SnackDesc, requestSnack.SnackCat, requestSnack.SnackPic, requestSnack.HealthScore)
+						VALUES ($1, $2, $3, $4, $5)`,
+		requestSnack.SnackName, requestSnack.SnackDesc, requestSnack.SnackCat, requestSnack.SnackPic, requestSnack.HealthScore)
 	if err != nil {
 		// If there is any issue with inserting into the database, return a 500 error
 		w.WriteHeader(http.StatusInternalServerError)
@@ -50,10 +49,7 @@ func getSnack(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := db.Query("SELECT snackid, snackname, snackdesc, snackcat, snackpic, healthscore 
-							FROM snacks 
-							WHERE snackid=$1", 
-							requestSnackKey.SnackId )
+	result, err := db.Query("SELECT snackid, snackname, snackdesc, snackcat, snackpic, healthscore FROM snacks WHERE snackid=$1", requestSnackKey.SnackId)
 
 	if err != nil {
 		// If there is any issue with reaading from the database, return a 500 error
