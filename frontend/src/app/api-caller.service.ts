@@ -43,8 +43,11 @@ export class ApiCallerService {
     return this.http.get<Sighting[]>(GET_SIGHTINGS)
   }
 
-  submitSighting(newSighting: Sighting): Observable<Sighting> {
-    return this.http.post<Sighting>(SUBMIT_SIGHTING, newSighting, {})
+  submitSighting(sname: string, sightime: string, sightlocation: string, simage: string, sighter: string): void {
+    console.log(sightime)
+    this.http.post<any>(SUBMIT_SIGHTING, { sname: sname, sightime: "2022-09-21T16:07:04.562228Z", simage: simage, sightlocation: sightlocation, sighter: sighter }, {}).subscribe(res => {
+      console.log(res)
+    })
   }
 
   // submitSighting(newSighting: Sighting): void {

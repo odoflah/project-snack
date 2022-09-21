@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Sighting } from '../_interfaces/sighting';
+import { ApiCallerService } from '../api-caller.service';
 
 @Component({
   selector: 'app-snack-add-form',
@@ -9,7 +10,7 @@ import { Sighting } from '../_interfaces/sighting';
 })
 export class SnackAddFormComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private apiCallerService: ApiCallerService) { }
 
   ngOnInit(): void {
   }
@@ -22,16 +23,22 @@ export class SnackAddFormComponent implements OnInit {
 
   newSnackSighting(): void {
     let formVal = this.snackSubmission.value
-    console.log(formVal)
-    // let newSighting: Sighting = {
-    //   snack: formVal.name ?? undefined,
-    //   location: this.snackSubmission.value.location,
-    //   picture: null,
-    //   sighter: this.snackSubmission.value.sighter,
-    //   timestamp: Date.now()
-    // }
+
+    this.apiCallerService.submitSighting(formVal.name!, Date.now().toString(), formVal.location!, "", formVal.sighter!)
+    console.log(formVal.sighter)
+    // let newSighting: Sighting;
+
+    // newSighting.sname = formVal.name
+
+    // sname  formVal.name,
+    // simage: "",
+    //   sighttime: Date.now().toString(),
+    //     sightlocation: formVal.location,
+    //       sighter: formVal.sighter
+
     console.log("New snack")
 
   }
-
 }
+
+// curl -X POST -v -H "Content-Type: application/json" -d '{"sname": "Kit kat", "sighttime": "2022-09-21 12:18:46.473756", "sightlocation": "ssdfdfgdff", "simage": "", "sighter": "Alex"}' http://localhost:8000/snacktrack/submit-sighting
