@@ -33,10 +33,10 @@ func submitSighting(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
-	_, err := db.Query(`INSERT INTO snacksightings (sname, simage, sighttime, sightlocation) 
-						VALUES ($1, $2, $3, $4)`,
-		requestSnackSighting.SName, requestSnackSighting.SImage, requestSnackSighting.SighTime, requestSnackSighting.SightLocation)
+	fmt.Println(string(requestSnackSighting.SighTime))
+	_, err := db.Query(`INSERT INTO snacksightings (sname, simage, sighttime, sightlocation, sighter) 
+						VALUES ($1, $2, $3, $4, $5)`,
+		requestSnackSighting.SName, requestSnackSighting.SImage, requestSnackSighting.SighTime, requestSnackSighting.SightLocation, requestSnackSighting.Sighter)
 	if err != nil {
 		// If there is any issue with inserting into the database, return a 500 error
 		w.WriteHeader(http.StatusInternalServerError)
@@ -85,6 +85,7 @@ func removeSighting(w http.ResponseWriter, r *http.Request) {
 
 func obtainSnackSighting(requestBody io.ReadCloser) (SnackSighting, error) {
 	sighting := &SnackSighting{}
+	// fmt.Println(string(requestBody))
 	err := json.NewDecoder(requestBody).Decode(sighting)
 	if err != nil {
 		return *sighting, errors.New("unable to decode snackSighting, invalid request body")

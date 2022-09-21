@@ -43,24 +43,10 @@ export class ApiCallerService {
     return this.http.get<Sighting[]>(GET_SIGHTINGS)
   }
 
-  submitSighting(sname: string, sightime: string, sightlocation: string, simage: string, sighter: string): void {
-    console.log(sightime)
-    this.http.post<any>(SUBMIT_SIGHTING, { sname: sname, sightime: "2022-09-21T16:07:04.562228Z", simage: simage, sightlocation: sightlocation, sighter: sighter }, {}).subscribe(res => {
+  submitSighting(sname: string, sighttime: string, sightlocation: string, simage: string, sighter: string): void {
+    console.log(sighttime)
+    this.http.post<any>(SUBMIT_SIGHTING, { sname: sname, sighttime: sighttime, simage: simage, sightlocation: sightlocation, sighter: sighter }, {}).subscribe(res => {
       console.log(res)
     })
   }
-
-  // submitSighting(newSighting: Sighting): void {
-  //   this.http.post<any>(SUBMIT_SIGHTING, { username: username, password: password }, { observe: 'response' })
-  //     .subscribe(response => {
-
-  //       // You can access status:
-  //       console.log(response.status)
-
-  //       // Or any other header:
-  //       console.log(response.headers.get('X-Custom-Header'))
-  //     })
-  // }
-
-
 }

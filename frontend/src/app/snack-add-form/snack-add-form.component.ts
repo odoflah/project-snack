@@ -24,7 +24,9 @@ export class SnackAddFormComponent implements OnInit {
   newSnackSighting(): void {
     let formVal = this.snackSubmission.value
 
-    this.apiCallerService.submitSighting(formVal.name!, Date.now().toString(), formVal.location!, "", formVal.sighter!)
+    const now = new Date().toISOString();
+
+    this.apiCallerService.submitSighting(formVal.name!, now, formVal.location!, "", formVal.sighter!)
     console.log(formVal.sighter)
     // let newSighting: Sighting;
 
