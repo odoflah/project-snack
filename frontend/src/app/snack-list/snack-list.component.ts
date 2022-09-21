@@ -20,7 +20,7 @@ const ELEMENT_DATA: Snack[] = [
 @Component({
   selector: 'app-snack-list',
   templateUrl: './snack-list.component.html',
-  styleUrls: ['./snack-list.component.sass']
+  styleUrls: ['./snack-list.component.sass', '../app.component.sass']
 })
 export class SnackListComponent implements OnInit {
 
