@@ -24,7 +24,7 @@ const ELEMENT_DATA: Snack[] = [
 })
 export class SnackListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'location', 'picture'];
+  displayedColumns: string[] = ['name', 'location', 'picture', 'delete'];
   dataSource = ELEMENT_DATA;
 
   constructor() { }
