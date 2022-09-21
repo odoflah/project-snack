@@ -1,19 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
-export interface Snack {
-  name: string;
-  location: string;
-  picture: string;
-}
+import { ApiCallerService } from '../api-caller.service';
+import { Sighting } from '../_interfaces/sighting';
 
-const ELEMENT_DATA: Snack[] = [
-  { name: 'Kit Kat', location: "Docs MK8-3", picture: 'H' },
-  { name: 'Orange Chocolate', location: "Docs MK8-3", picture: 'He' },
-  { name: 'Smoked Almonds', location: "Docs MK8-3", picture: 'Li' },
-  { name: 'Spinach', location: "Docs MK8-3", picture: 'Be' },
-  { name: 'Brocoli', location: "Docs MK8-3", picture: 'B' },
-  { name: 'Roast peppers', location: "Docs MK8-3", picture: 'C' },
-  { name: 'Water', location: "Docs MK8-3", picture: 'N' },
+// export interface Snack {
+//   name: string;
+//   location: string;
+//   picture: string;
+// }
+
+const ELEMENT_DATA: Sighting[] = [
+  { snack: 'Kit Kat', location: "Docs MK8-3", picture: null, sighter: "Alex", timestamp: "2022-09-21 11:18:46.473756" },
 ];
 
 
@@ -24,14 +21,18 @@ const ELEMENT_DATA: Snack[] = [
 })
 export class SnackListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'location', 'picture'];
-  dataSource = ELEMENT_DATA;
+  displayedColumns: string[] = ['snack', 'location', 'sighter', 'timestamp'];
+  dataSource: Sighting[] = ELEMENT_DATA;
 
-  constructor() { }
 
-  ngOnInit(): void {
+  constructor(private apiCallerService: ApiCallerService) {
   }
 
-
-
+  ngOnInit(): void {
+    this.apiCallerService.getSightings().subscribe((data: Sighting[]) => {
+      console.log(data)
+      this.dataSource = data
+      console.log(this.dataSource)
+    })
+  }
 }

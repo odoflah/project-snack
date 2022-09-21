@@ -3,5 +3,5 @@ export interface Sighting {
     location: string
     picture: null
     sighter: string
-    timestamp: number
+    timestamp: string
 }
