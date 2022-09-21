@@ -27,5 +27,6 @@ create table snackSightings (
   simage text NOT NULL DEFAULT '',
   sightTime timestamp,
   sightLocation text,
+  sighter text NOT NULL DEFAULT '',
   CONSTRAINT pk_sighting PRIMARY KEY (sname, sightTime, sightLocation)
 );

@@ -3,4 +3,5 @@ export interface Sighting {
     simage: string
     sighttime: string
     sightlocation: string
+    sighter: string
 }

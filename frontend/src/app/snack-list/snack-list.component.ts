@@ -10,7 +10,7 @@ import { Sighting } from '../_interfaces/sighting';
 // }
 
 const ELEMENT_DATA: Sighting[] = [
-  { sname: 'Kit Kat', simage: "", sighttime: "2022-09-21 11:18:46.473756", sightlocation: "Velasco mk4-6" },
+  { sname: 'Kit Kat', simage: "", sighttime: "2022-09-21 11:18:46.473756", sightlocation: "Velasco mk4-6", sighter: "Alex" },
 ];
 
 
@@ -21,7 +21,7 @@ const ELEMENT_DATA: Sighting[] = [
 })
 export class SnackListComponent implements OnInit {
 
-  displayedColumns: string[] = ['sname', 'sightlocation'];
+  displayedColumns: string[] = ['sname', 'sightlocation', 'sighter'];
   dataSource: Sighting[] = ELEMENT_DATA;
 
 

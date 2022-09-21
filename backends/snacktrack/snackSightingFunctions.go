@@ -16,6 +16,7 @@ type SnackSighting struct {
 	SighTime      string `json:"sighttime" db:"sighttime"`
 	SightLocation string `json:"sightlocation" db:"sightlocation"`
 	SImage        string `json:"simage" db:"simage"`
+	Sighter       string `json:"sighter" db:"sighter"`
 }
 
 // SnackSighting struct models the structure of a SnackSighting key, both in the request body, and in the database schema
@@ -43,7 +44,7 @@ func submitSighting(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func getSightings(w http.ResponseWriter, r *http.Request) {
-	result, err := db.Query("SELECT sname, simage, sighttime, sightlocation FROM snacksightings")
+	result, err := db.Query("SELECT sname, simage, sighttime, sightlocation, sighter FROM snacksightings")
 	if err != nil {
 		fmt.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -53,7 +54,7 @@ func getSightings(w http.ResponseWriter, r *http.Request) {
 		for result.Next() {
 			//Append all returned entries to list
 			sighting := &SnackSighting{}
-			if err := result.Scan(&sighting.SName, &sighting.SImage, &sighting.SighTime, &sighting.SightLocation); err != nil {
+			if err := result.Scan(&sighting.SName, &sighting.SImage, &sighting.SighTime, &sighting.SightLocation, &sighting.Sighter); err != nil {
 				fmt.Println(err)
 				w.WriteHeader(http.StatusInternalServerError)
 				return
