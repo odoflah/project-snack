@@ -41,10 +41,10 @@ func main() {
 
 	http.HandleFunc("/submit-snack", submitSnack)
 	http.HandleFunc("/get-snack", getSnack)
-	http.HandleFunc("/removeSnack", removeSnack)
+	http.HandleFunc("/remove-snack", removeSnack)
 	http.HandleFunc("/submit-sighting", submitSighting)
 	http.HandleFunc("/get-sightings", getSightings)
-	http.HandleFunc("/removeSnackSighting", removeSnackSighting)
+	http.HandleFunc("/remove-sighting", removeSighting)
 
 	http.ListenAndServe(":80", nil)
 }
