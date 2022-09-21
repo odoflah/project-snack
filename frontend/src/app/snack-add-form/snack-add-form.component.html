@@ -5,12 +5,9 @@
     <div class="card-section">
         <mat-card class="form-card">
             <form class="form" [formGroup]="snackSubmission" (ngSubmit)="newSnackSighting()">
-                <mat-form-field class="form-field" appearance="fill">
-                    <mat-label>Select the snack</mat-label>
-                    <mat-select>
-                        <mat-option value="one">Smoked almonds</mat-option>
-                        <mat-option value="two">Roasted tofu</mat-option>
-                    </mat-select>
+                <mat-form-field class="form-field" appearance="legacy">
+                    <mat-label>Snack name</mat-label>
+                    <input matInput placeholder="What is it?" formControlName="name">
                 </mat-form-field>
                 <mat-form-field class="form-field" appearance="legacy">
                     <mat-label>Snack location</mat-label>
