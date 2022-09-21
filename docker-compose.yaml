@@ -2,23 +2,11 @@ version: '3.1'
 
 services:
 
-  auth:
-    build:
-      context: ./backends/auth
-    env_file:
-      - ./backends/auth/.env
-    ports:
-      - 8001:80
-    depends_on:
-      - db
-
   greeting:
     build:
       context: ./backends/greeting
     ports:
       - 8002:80
-    depends_on:
-      - auth
 
   snacktrack:
     build:
@@ -27,8 +15,6 @@ services:
       - ./backends/snacktrack/.env
     ports:
       - 8003:80
-    depends_on:
-      - auth
 
   gateway:
     build:
