@@ -16,7 +16,7 @@ import (
 // Credential struct models the structure of a user, both in the request body, and in the database schema
 type SnackSighting struct {
 	snackId int `json:"snackId"`
-	sighTime string `json:"sightTime"`
+	sightTime string `json:"sightTime"`
 	sightLocation string `json:"sightLocation"`
 	sightEstDuration string `json:"sightEstDuration"`
 }
@@ -28,7 +28,9 @@ type SnackSightingKey struct{
 }
 
 func addSnackSighting(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, r)
 	requestSnackSighting, jsonError := obtainSnackSighting(r.Body)
+	fmt.Fprintln(w, requestSnackSighting.sightTime)
 	if jsonError != nil {
 		// If there is something wrong with the request body, return a 400 status
 		w.WriteHeader(http.StatusBadRequest)
@@ -36,7 +38,7 @@ func addSnackSighting(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	_, err := db.Query(` INSERT INTO snacksighting (snackid, sighttime, sightlocation, sightestduration)
-							VALUES ($1, $2, $3, $4)`, requestSnackSighting.snackId, requestSnackSighting.sighTime, requestSnackSighting.sightLocation, requestSnackSighting.sightEstDuration)
+							VALUES ($1, $2, $3, $4)`, requestSnackSighting.snackId, requestSnackSighting.sightTime, requestSnackSighting.sightLocation, requestSnackSighting.sightEstDuration)
 	if err != nil {
 		// If there is any issue with inserting into the database, return a 500 error
 		w.WriteHeader(http.StatusInternalServerError)
@@ -51,7 +53,7 @@ func readSnackSighting(w http.ResponseWriter, r *http.Request) {
 	}else{
 		for result.Next() {
 			sighting := &SnackSighting{}
-			if err := result.Scan(sighting.snackId, sighting.sighTime, sighting.sightLocation, sighting.sightEstDuration); err != nil {
+			if err := result.Scan(sighting.snackId, sighting.sightTime, sighting.sightLocation, sighting.sightEstDuration); err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
@@ -85,20 +87,22 @@ func removeSnackSighting(w http.ResponseWriter, r *http.Request) {
 }
 
 func obtainSnackSighting(requestBody io.ReadCloser) (SnackSighting, error) {
-	sighting := &SnackSighting{}
-	err := json.NewDecoder(requestBody).Decode(sighting)
+	decoder := json.NewDecoder(requestBody)
+    var sighting SnackSighting
+    err := decoder.Decode(&sighting)
 	if err != nil {
-		return *sighting, errors.New("unable to decode snackSighting, invalid request body")
+		return sighting, errors.New("unable to decode snackSightingKey, invalid request body")
 	}
-	return *sighting, nil
+	return sighting, nil
 }
 
 func obtainSnackSightingKey(requestBody io.ReadCloser) (SnackSightingKey, error) {
-	sightingKey := &SnackSightingKey{}
-	err := json.NewDecoder(requestBody).Decode(sightingKey)
+	decoder := json.NewDecoder(requestBody)
+    var sightingKey SnackSightingKey
+    err := decoder.Decode(&sightingKey)
 	if err != nil {
-		return *sightingKey, errors.New("unable to decode snackSightingKey, invalid request body")
+		return sightingKey, errors.New("unable to decode snackSightingKey, invalid request body")
 	}
-	return *sightingKey, nil
+	return sightingKey, nil
 }
 
