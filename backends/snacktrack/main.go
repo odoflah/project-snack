@@ -68,30 +68,3 @@ func hello(w http.ResponseWriter, r *http.Request) {
 		}
 	}	
 }
-
-func readSnackSighting(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(w, "Success! 2")
-	result, err := db.Query("select * from snacksighting")
-	if err != nil{
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}else{
-		for result.Next() {
-			fmt.Println(w, "Success! 1")
-			sighting := &SnackSighting{}
-			if err := result.Scan(sighting.snackId, sighting.sighTime, sighting.sightLocation, sighting.sightEstDuration); err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
-				return
-			}
-			//CHANGE TO ADD TO ARRAY AND THEN WRITE FULL ARRAY TO JSON HTTP OUTPUT
-			// var jsonOutput []byte
-			// jsonOutput, err = json.Marshal(sighting)
-			// if(err != nil){
-			// 	w.WriteHeader(http.StatusInternalServerError)
-			// 	return
-			// }
-			// w.Write(jsonOutput)
-			// fmt.Println(w, "Success! 2")
-		}
-	}
-}
