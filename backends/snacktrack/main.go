@@ -1,15 +1,16 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
 	"database/sql"
+	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
 	"time"
-	"io/ioutil"
 
 	_ "github.com/lib/pq"
 )
+
 // The "db" package level variable will hold the reference to our database instance
 var db *sql.DB
 
@@ -41,8 +42,8 @@ func main() {
 	http.HandleFunc("/addSnack", addSnack)
 	http.HandleFunc("/readSnack", readSnack)
 	http.HandleFunc("/removeSnack", removeSnack)
-	http.HandleFunc("/addSnackSighting", addSnackSighting)
-	http.HandleFunc("/readSnackSighting", readSnackSighting)
+	http.HandleFunc("/submit-sighting", submitSighting)
+	http.HandleFunc("/get-sightings", getSightings)
 	http.HandleFunc("/removeSnackSighting", removeSnackSighting)
 
 	http.ListenAndServe(":80", nil)
@@ -53,9 +54,9 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	db.Query(` INSERT INTO snacks (snackname, snackdesc, snackcat, snackpic, healthscore)
 							VALUES ('test', 'test', 'test', 'test', 5)`)
 	result, err := db.Query("select * from snacks")
-	if err != nil{
+	if err != nil {
 		fmt.Fprintln(w, err)
-	}else{
+	} else {
 		for result.Next() {
 			var id int
 			var name string
@@ -69,7 +70,7 @@ func hello(w http.ResponseWriter, r *http.Request) {
 			}
 			fmt.Fprintln(w, name)
 		}
-	}	
+	}
 }
 
 func migrateDb() {

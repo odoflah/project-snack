@@ -28,11 +28,12 @@ type SnackSightingKey struct {
 	sightLocation string `json:"sightLocation"`
 }
 
-func addSnackSighting(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, r)
+func submitSighting(w http.ResponseWriter, r *http.Request) {
 	requestSnackSighting, jsonError := obtainSnackSighting(r.Body)
-	fmt.Fprintln(w, requestSnackSighting.sightTime)
+	fmt.Println(requestSnackSighting.SightLocation)
+	// fmt.Fprintln(w, requestSnackSighting)
 	if jsonError != nil {
+		fmt.Println(jsonError)
 		// If there is something wrong with the request body, return a 400 status
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -46,7 +47,7 @@ func addSnackSighting(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-func readSnackSighting(w http.ResponseWriter, r *http.Request) {
+func getSightings(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Hello")
 	result, err := db.Query("select snackid, sighttime, sightlocation, sightestduration from snacksighting")
 	if err != nil {
@@ -98,13 +99,13 @@ func removeSnackSighting(w http.ResponseWriter, r *http.Request) {
 }
 
 func obtainSnackSighting(requestBody io.ReadCloser) (SnackSighting, error) {
-	decoder := json.NewDecoder(requestBody)
-	var sighting SnackSighting
-	err := decoder.Decode(&sighting)
+	sighting := &SnackSighting{}
+	err := json.NewDecoder(requestBody).Decode(sighting)
 	if err != nil {
-		return sighting, errors.New("unable to decode snackSightingKey, invalid request body")
+		fmt.Println(err)
+		return *sighting, errors.New("unable to decode snackSightingKey, invalid request body")
 	}
-	return sighting, nil
+	return *sighting, nil
 }
 
 func obtainSnackSightingKey(requestBody io.ReadCloser) (SnackSightingKey, error) {
