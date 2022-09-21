@@ -23,9 +23,9 @@ type SnackSighting struct {
 }
 
 type SnackSightingKey struct {
-	snackId       int    `json:"snackId"`
-	sighTime      string `json:"sightTime"`
-	sightLocation string `json:"sightLocation"`
+	SnackId          int    `json:"snackid" db:"snackid"`
+	SighTime         string `json:"sighttime" db:"sighttime"`
+	SightLocation    string `json:"sightlocation" db:"sightlocation"`
 }
 
 func submitSighting(w http.ResponseWriter, r *http.Request) {
@@ -89,8 +89,8 @@ func removeSnackSighting(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := db.Query(` DELETE FROM snacksighting WHERE snackid=$1 AND sighttime=$2 AND sightlocation=$3)`,
-		requestSnackSightingKey.snackId, requestSnackSightingKey.sighTime, requestSnackSightingKey.sightLocation)
+	_, err := db.Query(` DELETE FROM snacksighting WHERE snackid=$1 AND sighttime=$2 AND sightlocation=$3`,
+		requestSnackSightingKey.SnackId, requestSnackSightingKey.SighTime, requestSnackSightingKey.SightLocation)
 	if err != nil {
 		// If there is any issue with inserting into the database, return a 500 error
 		w.WriteHeader(http.StatusInternalServerError)
@@ -109,11 +109,11 @@ func obtainSnackSighting(requestBody io.ReadCloser) (SnackSighting, error) {
 }
 
 func obtainSnackSightingKey(requestBody io.ReadCloser) (SnackSightingKey, error) {
-	decoder := json.NewDecoder(requestBody)
-	var sightingKey SnackSightingKey
-	err := decoder.Decode(&sightingKey)
+	sightingKey := &SnackSightingKey{}
+	err := json.NewDecoder(requestBody).Decode(sightingKey)
 	if err != nil {
-		return sightingKey, errors.New("unable to decode snackSightingKey, invalid request body")
+		fmt.Println(err)
+		return *sightingKey, errors.New("unable to decode snackSightingKey, invalid request body")
 	}
-	return sightingKey, nil
+	return *sightingKey, nil
 }

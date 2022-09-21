@@ -39,8 +39,8 @@ func main() {
 
 	http.HandleFunc("/", hello)
 
-	http.HandleFunc("/addSnack", addSnack)
-	http.HandleFunc("/readSnack", readSnack)
+	http.HandleFunc("/submit-snack", submitSnack)
+	http.HandleFunc("/get-snack", getSnack)
 	http.HandleFunc("/removeSnack", removeSnack)
 	http.HandleFunc("/submit-sighting", submitSighting)
 	http.HandleFunc("/get-sightings", getSightings)
