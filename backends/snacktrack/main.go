@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"os"
 	"time"
+	"io/ioutil"
 
 	_ "github.com/lib/pq"
 )
@@ -32,6 +33,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	migrateDb()
 
 	http.HandleFunc("/", hello)
 
@@ -67,4 +70,24 @@ func hello(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintln(w, name)
 		}
 	}	
+}
+
+func migrateDb() {
+	// if db exists and schema matches current schema -> connect to db (need to connect to the bs server, not the individual database)
+	// Create db
+	// Create user
+	// Upload schema
+	// if db does not exist -> create database
+	// if db exists but schema does not match updated schema -> update schema
+	query, err := ioutil.ReadFile("./init.sql")
+	if err != nil {
+		panic(err)
+	}
+	sql := string(query)
+	// fmt.Println("Printing sql")
+	// fmt.Println(sql)
+	if _, err := db.Exec(sql); err != nil {
+		// panic(err)
+		fmt.Println(err)
+	}
 }
