@@ -4,31 +4,28 @@
     </div>
     <div class="card-section">
         <mat-card class="form-card">
-            <div class="form">
+            <form class="form" [formGroup]="snackSubmission" (ngSubmit)="newSnackSighting()">
                 <mat-form-field class="form-field" appearance="legacy">
                     <mat-label>Snack name</mat-label>
-                    <input matInput placeholder="What is it?">
-                    <mat-icon matSuffix>star</mat-icon>
+                    <input matInput placeholder="What is it?" formControlName="name">
                 </mat-form-field>
                 <mat-form-field class="form-field" appearance="legacy">
                     <mat-label>Snack location</mat-label>
-                    <input matInput placeholder="Where to find it?">
-                    <mat-icon matSuffix>location_on</mat-icon>
+                    <input matInput placeholder="Where to find it?" formControlName="location">
                 </mat-form-field>
                 <mat-form-field class="form-field" appearance="legacy">
                     <mat-label>Your name</mat-label>
-                    <input matInput placeholder="Who are you?">
-                    <mat-icon matSuffix>person</mat-icon>
+                    <input matInput placeholder="Who are you?" formControlName="sighter">
                 </mat-form-field>
                 <div class="form-field">
                     <p class="color-grey">Upload an image of the snack</p>
                     <input type="file" class="file-upload" onchange="console.log(event.target.files)">
                 </div>
                 <div class="submit-button-field">
-                    <button mat-raised-button color="primary" class="submit-button">Upload snack!</button>
+                    <button mat-raised-button color="primary" class="submit-button" type="submit">Upload snack!</button>
                     <button mat-raised-button color="primary" class="submit-button" [routerLink]="''">Cancel</button>
                 </div>
-            </div>
+            </form>
         </mat-card>
     </div>
 </div>
