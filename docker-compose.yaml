@@ -15,8 +15,6 @@ services:
       - ./backends/snacktrack/.env
     ports:
       - 8003:80
-    depends_on:
-      - auth
 
   gateway:
     build:
