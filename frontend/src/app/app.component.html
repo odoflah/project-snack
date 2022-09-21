@@ -1,2 +1,9 @@
-<app-auth-form></app-auth-form>
+<mat-toolbar>
+    <span>Snacktrack</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
+        [routerLink]="'add-snack'">
+        <mat-icon>add</mat-icon>
+    </button>
+</mat-toolbar>
 <router-outlet></router-outlet>

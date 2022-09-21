@@ -103,45 +103,47 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	requestPath := r.URL.Path
 	serviceHost, servicePath := constructServiceRequestURL(requestPath)
 
-	// If we trying to access the authentication service, then let us. These requests will not have session cookies as
-	// they are requesting session tokens.
-	if serviceHost == os.Getenv("AUTH") {
-		connectAndServe(serviceHost, servicePath, w, r)
-		return // BUG: this is not needed?
-	}
+	connectAndServe(serviceHost, servicePath, w, r)
 
-	// If not requesting an authentication service, check cookie to see see if user is authenticated
-	cookieFromRequest, err := r.Cookie("session_token")
+	// // If we trying to access the authentication service, then let us. These requests will not have session cookies as
+	// // they are requesting session tokens.
+	// if serviceHost == os.Getenv("AUTH") {
+	// 	connectAndServe(serviceHost, servicePath, w, r)
+	// 	return // BUG: this is not needed?
+	// }
 
-	if err != nil {
-		if err == http.ErrNoCookie {
-			// If the cookie is not set, return an unauthorized status
-			w.WriteHeader(http.StatusUnauthorized)
-			return
-		}
-		// For any other type of error, return a bad request status
-		w.WriteHeader(http.StatusBadRequest) // unable to process the request
-		return
-	}
+	// // If not requesting an authentication service, check cookie to see see if user is authenticated
+	// cookieFromRequest, err := r.Cookie("session_token")
 
-	// Make a request to check if user session token in cookie is valid
-	isAuthRequestStatus, err := isAuthRequest(cookieFromRequest)
+	// if err != nil {
+	// 	if err == http.ErrNoCookie {
+	// 		// If the cookie is not set, return an unauthorized status
+	// 		w.WriteHeader(http.StatusUnauthorized)
+	// 		return
+	// 	}
+	// 	// For any other type of error, return a bad request status
+	// 	w.WriteHeader(http.StatusBadRequest) // unable to process the request
+	// 	return
+	// }
 
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+	// // Make a request to check if user session token in cookie is valid
+	// isAuthRequestStatus, err := isAuthRequest(cookieFromRequest)
 
-	if isAuthRequestStatus {
-		// If user is authenticated with appropriate session token cookie, connect them to requested service and serve the request
-		connectAndServe(serviceHost, servicePath, w, r)
-		return // BUG: this is not needed?
-	} else {
-		// If unauthenticated AND not attempting to authenticate (checked at the beginning of the function), then return
-		// an unauthorized status
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
+	// if err != nil {
+	// 	w.WriteHeader(http.StatusInternalServerError)
+	// 	return
+	// }
+
+	// if isAuthRequestStatus {
+	// 	// If user is authenticated with appropriate session token cookie, connect them to requested service and serve the request
+	// 	connectAndServe(serviceHost, servicePath, w, r)
+	// 	return // BUG: this is not needed?
+	// } else {
+	// 	// If unauthenticated AND not attempting to authenticate (checked at the beginning of the function), then return
+	// 	// an unauthorized status
+	// 	w.WriteHeader(http.StatusUnauthorized)
+	// 	return
+	// }
 }
 
 func enableCors(w http.ResponseWriter) {
