@@ -15,6 +15,21 @@ import (
 var db *sql.DB
 
 func main() {
+
+	connectDb()
+	migrateDb()
+
+	http.HandleFunc("/submit-snack", submitSnack)
+	http.HandleFunc("/get-snack", getSnack)
+	http.HandleFunc("/remove-snack", removeSnack)
+	http.HandleFunc("/submit-sighting", submitSighting)
+	http.HandleFunc("/get-sightings", getSightings)
+	http.HandleFunc("/remove-sighting", removeSighting)
+
+	http.ListenAndServe(":80", nil)
+}
+
+func connectDb() {
 	// Sleep to allow database process to start up...
 	time.Sleep(5 * time.Second)
 
@@ -33,43 +48,6 @@ func main() {
 	err = db.Ping()
 	if err != nil {
 		panic(err)
-	}
-
-	migrateDb()
-
-	http.HandleFunc("/", hello)
-
-	http.HandleFunc("/addSnack", addSnack)
-	http.HandleFunc("/readSnack", readSnack)
-	http.HandleFunc("/removeSnack", removeSnack)
-	http.HandleFunc("/submit-sighting", submitSighting)
-	http.HandleFunc("/get-sightings", getSightings)
-	http.HandleFunc("/removeSnackSighting", removeSnackSighting)
-
-	http.ListenAndServe(":80", nil)
-}
-
-func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "This is snacktrack!")
-	db.Query(` INSERT INTO snacks (snackname, snackdesc, snackcat, snackpic, healthscore)
-							VALUES ('test', 'test', 'test', 'test', 5)`)
-	result, err := db.Query("select * from snacks")
-	if err != nil {
-		fmt.Fprintln(w, err)
-	} else {
-		for result.Next() {
-			var id int
-			var name string
-			var desc string
-			var cat string
-			var image string
-			var score int
-
-			if err := result.Scan(&id, &name, &desc, &cat, &image, &score); err != nil {
-				fmt.Fprintln(w, err)
-			}
-			fmt.Fprintln(w, name)
-		}
 	}
 }
 

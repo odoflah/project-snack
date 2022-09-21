@@ -17,7 +17,7 @@ const ELEMENT_DATA: Sighting[] = [
 @Component({
   selector: 'app-snack-list',
   templateUrl: './snack-list.component.html',
-  styleUrls: ['./snack-list.component.sass']
+  styleUrls: ['./snack-list.component.sass', '../app.component.sass']
 })
 export class SnackListComponent implements OnInit {
 
@@ -31,7 +31,7 @@ export class SnackListComponent implements OnInit {
   ngOnInit(): void {
     this.apiCallerService.getSightings().subscribe((data: Sighting[]) => {
       console.log(data)
-      this.dataSource = data
+      // this.dataSource = data
       console.log(this.dataSource)
     })
   }
