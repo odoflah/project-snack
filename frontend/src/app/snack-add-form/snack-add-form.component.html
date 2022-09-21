@@ -21,9 +21,9 @@
                     <p class="color-grey">Upload an image of the snack</p>
                     <input type="file" class="file-upload" onchange="console.log(event.target.files)">
                 </div>
-                <div class="submit-button-field">
-                    <button mat-raised-button color="primary" class="submit-button" type="submit">Upload snack!</button>
-                    <button mat-raised-button color="primary" class="submit-button" [routerLink]="''">Cancel</button>
+                <div class="button-container">
+                    <button class="button bg-light-yellow" type="submit">Upload</button>
+                    <button class="button" [routerLink]="''">Cancel</button>
                 </div>
             </form>
         </mat-card>
