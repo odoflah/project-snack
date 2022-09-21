@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
+	//"fmt"
 	"net/http"
-	"database/sql"
-	"os"
-	"time"
+	// "database/sql"
+	// "os"
+	// "time"
 
 	_ "github.com/lib/pq"
 )
