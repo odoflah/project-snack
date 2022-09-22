@@ -1,3 +1,7 @@
 - [ ] Run in GCP
+    - [x] Setup database
+    - [ ] Upload images to repository
+    - [ ] Setup manifest files
+    - [ ] Deploy in GKE
 - [ ] Clean up codebase
 - [ ] Add image upload feature
