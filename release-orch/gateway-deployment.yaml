@@ -30,6 +30,11 @@ spec:
             configMapKeyRef:
               name: gateway-confmap
               key: GREETING
+        - name: SNACKTRACK
+          valueFrom:
+            configMapKeyRef:
+              name: gateway-confmap
+              key: SNACKTRACK
         # resources:
         #   requests:
         #     memory: "64Mi"
