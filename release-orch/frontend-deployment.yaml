@@ -19,6 +19,12 @@ spec:
         image: gcr.io/seraphic-spider-363215/microservice-app-template-frontend:latest
         ports:
         - containerPort: 80
+        env:
+        - name: APIURL
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-confmap
+              key: APIURL
         # resources:
         #   requests:
         #     memory: "64Mi"

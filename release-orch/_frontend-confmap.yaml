@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  APIURL: http://gateway:80
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: frontend-confmap
+  name: frontend-confmap
