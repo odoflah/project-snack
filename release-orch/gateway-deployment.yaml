@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: gateway
-        image: gcr.io/abiding-cedar-359014/microservice-app-template-gateway:latest
+        image: gcr.io/seraphic-spider-363215/microservice-app-template-gateway:latest
         ports:
         - containerPort: 80
         env:

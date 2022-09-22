@@ -1,25 +1,25 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/abiding-cedar-359014/microservice-app-template-frontend', '-f', './frontend/dockerfile-prod', './frontend']
+  args: ['build', '-t', 'gcr.io/seraphic-spider-363215/microservice-app-template-frontend', '-f', './frontend/dockerfile-prod', './frontend']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/abiding-cedar-359014/microservice-app-template-frontend']
+  args: ['push', 'gcr.io/seraphic-spider-363215/microservice-app-template-frontend']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/abiding-cedar-359014/microservice-app-template-gateway', '-f', './gateway/dockerfile', './gateway']
+  args: ['build', '-t', 'gcr.io/seraphic-spider-363215/microservice-app-template-gateway', '-f', './gateway/dockerfile', './gateway']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/abiding-cedar-359014/microservice-app-template-gateway']
+  args: ['push', 'gcr.io/seraphic-spider-363215/microservice-app-template-gateway']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/abiding-cedar-359014/microservice-app-template-auth', '-f', './backends/auth/dockerfile', './backends/auth']
+  args: ['build', '-t', 'gcr.io/seraphic-spider-363215/microservice-app-template-auth', '-f', './backends/auth/dockerfile', './backends/auth']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/abiding-cedar-359014/microservice-app-template-auth']
+  args: ['push', 'gcr.io/seraphic-spider-363215/microservice-app-template-auth']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/abiding-cedar-359014/microservice-app-template-greeting', '-f', './backends/greeting/dockerfile', './backends/greeting']
+  args: ['build', '-t', 'gcr.io/seraphic-spider-363215/microservice-app-template-greeting', '-f', './backends/greeting/dockerfile', './backends/greeting']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/abiding-cedar-359014/microservice-app-template-greeting']
+  args: ['push', 'gcr.io/seraphic-spider-363215/microservice-app-template-greeting']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/abiding-cedar-359014/microservice-app-template-snacktrack', '-f', './backends/snacktrack/dockerfile', './backends/snacktrack']
+  args: ['build', '-t', 'gcr.io/seraphic-spider-363215/microservice-app-template-snacktrack', '-f', './backends/snacktrack/dockerfile', './backends/snacktrack']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/abiding-cedar-359014/microservice-app-template-snacktrack']
+  args: ['push', 'gcr.io/seraphic-spider-363215/microservice-app-template-snacktrack']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/abiding-cedar-359014/microservice-app-template-upload', '-f', './backends/upload/dockerfile', './backends/upload']
+  args: ['build', '-t', 'gcr.io/seraphic-spider-363215/microservice-app-template-upload', '-f', './backends/upload/dockerfile', './backends/upload']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/abiding-cedar-359014/microservice-app-template-upload']
+  args: ['push', 'gcr.io/seraphic-spider-363215/microservice-app-template-upload']

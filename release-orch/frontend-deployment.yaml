@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/abiding-cedar-359014/microservice-app-template-frontend:latest
+        image: gcr.io/seraphic-spider-363215/microservice-app-template-frontend:latest
         ports:
         - containerPort: 80
         # resources:

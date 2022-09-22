@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: auth
-        image: gcr.io/abiding-cedar-359014/microservice-app-template-auth:latest
+        image: gcr.io/seraphic-spider-363215/microservice-app-template-auth:latest
         ports:
         - containerPort: 80
         env:

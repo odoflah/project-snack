@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: greeting-deployment
+  name: snacktrack-deployment
   labels:
-    app: greeting
+    app: snacktrack
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: greeting
+      app: snacktrack
   template:
     metadata:
       labels:
-        app: greeting
+        app: snacktrack
     spec:
       containers:
-      - name: greeting
-        image: gcr.io/seraphic-spider-363215/microservice-app-template-greeting:latest
+      - name: snacktrack
+        image: gcr.io/seraphic-spider-363215/microservice-app-template-snacktrack:latest
         ports:
         - containerPort: 80
         # resources:
