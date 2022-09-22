@@ -31,7 +31,7 @@ spec:
               name: gateway-confmap
               key: GREETING
         - name: SNACKTRACK
-          value: "10.96.8.24"
+          value: greeting-service
         # resources:
         #   requests:
         #     memory: "64Mi"
