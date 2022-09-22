@@ -26,10 +26,7 @@ spec:
               name: gateway-confmap
               key: AUTH
         - name: GREETING
-          valueFrom:
-            configMapKeyRef:
-              name: gateway-confmap
-              key: GREETING
+          value: 10.96.8.24:80
         - name: SNACKTRACK
           value: greeting-service
         # resources:
