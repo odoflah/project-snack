@@ -8,6 +8,12 @@ services:
     ports:
       - 8002:80
 
+  upload:
+    build:
+      context: ./backends/upload
+    ports:
+      - 8001:80
+
   snacktrack:
     build:
       context: ./backends/snacktrack
