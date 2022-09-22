@@ -19,6 +19,27 @@ spec:
         image: gcr.io/seraphic-spider-363215/microservice-app-template-snacktrack:latest
         ports:
         - containerPort: 80
+        env:
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: snacktrack-secret
+              key: dbhost
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: snacktrack-secret
+              key: dbname
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: snacktrack-secret
+              key: username
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: snacktrack-secret
+              key: password
         # resources:
         #   requests:
         #     memory: "64Mi"
